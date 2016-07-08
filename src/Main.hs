@@ -16,7 +16,9 @@ import qualified Network.MQTT as MQTT
 
 import Cli
 
-handleMsg :: [Char] -> MQTT.Message MQTT.PUBLISH -> IO ()
+type TopicName = [Char]
+
+handleMsg :: TopicName  -> MQTT.Message MQTT.PUBLISH -> IO ()
 handleMsg topicName msg =
     -- sometimes it's useful to ignore retained messages
     unless (MQTT.retain $ MQTT.header msg) $ do
@@ -38,9 +40,7 @@ runApp (CliOptions hostname topic isQuiet) = do
         let topicName = (T.unpack . MQTT.text . MQTT.fromTopic) topic
         case qosGranted of
             [MQTT.Handshake] -> do
-                if isQuiet then return ()
-                           else putStrLn $ printf "Listening on %s..." topicName
-
+                unless isQuiet $ putStrLn $ printf "Listening on %s..." topicName
                 forever $ atomically (readTChan pubChan) >>= (handleMsg topicName)
             _ -> do
                 hPutStrLn stderr $ "Wanted QoS Handshake, got " ++ show qosGranted

@@ -11,6 +11,6 @@ instance Read MQTT.Topic where
 
 cliOptions :: Parser CliOptions
 cliOptions = CliOptions
-  <$> strOption (long "host" <> metavar "HOSTNAME" <> value "localhost" <> help "MQTT broker hostname")
+  <$> strOption          (long "host" <> metavar "HOSTNAME" <> value "localhost" <> help "MQTT broker hostname")
   <*> argument auto      (metavar "TOPIC" <> help "topic to listen to")
   <*> switch             (long "quiet" <> help "Reduce verbosity")
