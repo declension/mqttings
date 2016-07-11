@@ -16,7 +16,7 @@ import qualified Network.MQTT as MQTT
 
 import Cli
 
-type TopicName = [Char]
+type TopicName = String
 
 handleMsg :: TopicName  -> MQTT.Message MQTT.PUBLISH -> IO ()
 handleMsg topicName msg =
@@ -41,7 +41,7 @@ runApp (CliOptions hostname topic isQuiet) = do
         case qosGranted of
             [MQTT.Handshake] -> do
                 unless isQuiet $ putStrLn $ printf "Listening on %s..." topicName
-                forever $ atomically (readTChan pubChan) >>= (handleMsg topicName)
+                forever $ atomically (readTChan pubChan) >>= handleMsg topicName
             _ -> do
                 hPutStrLn stderr $ "Wanted QoS Handshake, got " ++ show qosGranted
                 exitFailure
