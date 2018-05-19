@@ -1,6 +1,7 @@
 module Cli where
 
 import           Options.Applicative
+import           Data.Semigroup ((<>))
 import qualified Network.MQTT as MQTT
 import qualified Data.Text as T
 

@@ -10,7 +10,8 @@ import           System.IO (hPutStrLn, stderr)
 import qualified Data.Text as T
 import           Text.Printf (printf)
 
-import           Options.Applicative (execParser, info, fullDesc, progDesc, helper, (<>))
+import           Options.Applicative (execParser, info, fullDesc, progDesc, helper)
+import           Data.Semigroup ((<>))
 import qualified Data.ByteString.UTF8 as UTF8
 import qualified Network.MQTT as MQTT
 
